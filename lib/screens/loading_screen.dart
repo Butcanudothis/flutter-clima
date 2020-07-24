@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'location.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -18,7 +19,19 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void getData() async {
     http.Response response = await http.get(
         'http://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=439d4b804bc8187953eb36d2a8c26a02');
-    print(response.body);
+    //  print(response.body);
+    if (response.statusCode == 200) {
+      String data = response.body;
+      print(data);
+      var temp = jsonDecode(data)['main']['temp'];
+      print(temp);
+      var weatherid = jsonDecode(data)['weather'][0]['id'];
+      print(weatherid);
+      var cityName = jsonDecode(data)['name'];
+      print(cityName);
+    } else {
+      print(response.statusCode);
+    }
   }
 
   @override
