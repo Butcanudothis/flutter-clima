@@ -3,22 +3,28 @@ import 'location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+const apiKey = 'dc262ee26dc83724f7b69e70df13ef34';
+
 class LoadingScreen extends StatefulWidget {
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  double lat;
+  double lon;
   void getGeolocation() async {
     Location obj = Location();
     await obj.getCurrentLocation();
-    print(obj.longitude);
-    print(obj.latitude);
+    lon = obj.longitude;
+    lat = obj.latitude;
+
+    getData();
   }
 
   void getData() async {
     http.Response response = await http.get(
-        'http://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=439d4b804bc8187953eb36d2a8c26a02');
+        'http://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey');
     //  print(response.body);
     if (response.statusCode == 200) {
       String data = response.body;
@@ -44,7 +50,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    getData();
     return Scaffold();
   }
 }
