@@ -24,20 +24,23 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   void updateUI(dynamic weatherData) {
-    if (weatherData == null) {
-      temperature = 0;
-      cityName = '';
-      weatherIcon = 'Error';
-      weatherMessage = 'error in location';
-    }
-    int temp = weatherData['main']['temp'].toInt();
-    temperature = temp;
-    print(temperature);
-    weatherIcon = weatherModel.getWeatherIcon(weatherData['weather'][0]['id']);
-    //print(condition);
-    cityName = weatherData['name'];
-    print(cityName);
-    weatherMessage = weatherModel.getMessage(temp);
+    setState(() {
+      if (weatherData == null) {
+        temperature = 0;
+        cityName = '';
+        weatherIcon = 'Error';
+        weatherMessage = 'error in location';
+      }
+      int temp = weatherData['main']['temp'].toInt();
+      temperature = temp;
+      print(temperature);
+      weatherIcon =
+          weatherModel.getWeatherIcon(weatherData['weather'][0]['id']);
+      //print(condition);
+      cityName = weatherData['name'];
+      print(cityName);
+      weatherMessage = weatherModel.getMessage(temp);
+    });
   }
 
   @override
@@ -93,6 +96,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       print(cName);
                       if (cName != null) {
                         var wData = await weatherModel.getCityWeather(cName);
+                        print(wData);
                         updateUI(wData);
                       }
                     },
